@@ -12,6 +12,9 @@ export class LeanTechniquesPhotoClient implements PhotoClient {
     };
     private readonly _apiKeyHeaderKey: string;
     private readonly _apiKeyHeaderValue: string;
+    private _albumsCache: GetAlbumsResponse | undefined;
+    private readonly _albumCache = new Map<number, GetAlbumResponse>();
+    private readonly _photoCache = new Map<number, GetPhotoResponse>();
    
     constructor() {
         this._serviceBaseUrl = getEnvVar('LEAN_TECHNIQUES_PHOTO_SERVICE_BASE_URL_PROXY');
@@ -20,39 +23,58 @@ export class LeanTechniquesPhotoClient implements PhotoClient {
     }
 
     async getAlbums(): Promise<GetAlbumsResponse> {
-        const headers = this.getRequestHeaders();
+        if (!this._albumsCache) {
+            const headers = this.getRequestHeaders();
 
-        const endpoint = `${this._serviceBaseUrl}/albums`;
+            const endpoint = `${this._serviceBaseUrl}/albums`;
 
-        const response = await fetch(endpoint, {
-            headers
-        });
+            const response = await fetch(endpoint, {
+                headers
+            });
 
-        return await this.handleHttpResponse(response);
+            this._albumsCache = await this.handleHttpResponse(response);
+        }
+        
+        // we know it was either set before the method was called or it was just set
+        return this._albumsCache!;
     }
 
     async getAlbum(albumId: number): Promise<GetAlbumResponse> {
-        const headers = this.getRequestHeaders();
+        if (!this._albumCache.has(albumId)) {
+            const headers = this.getRequestHeaders();
 
-        const endpoint = `${this._serviceBaseUrl}/albums/${albumId}`;
+            const endpoint = `${this._serviceBaseUrl}/albums/${albumId}`;
 
-        const response = await fetch(endpoint, {
-            headers
-        });
+            const response = await fetch(endpoint, {
+                headers
+            });
 
-        return await this.handleHttpResponse(response);
+            const albumResponse = await this.handleHttpResponse<GetAlbumResponse>(response);
+
+            this._albumCache.set(albumId, albumResponse);
+        }
+        
+        // we know it was either set before the method was called or it was just set
+        return this._albumCache.get(albumId)!;
     }
 
     async getPhoto(photoId: number): Promise<GetPhotoResponse> {
-        const headers = this.getRequestHeaders();
+        if (!this._photoCache.has(photoId)) {
+            const headers = this.getRequestHeaders();
 
-        const endpoint = `${this._serviceBaseUrl}/photos/${photoId}`;
+            const endpoint = `${this._serviceBaseUrl}/photos/${photoId}`;
 
-        const response = await fetch(endpoint, {
-            headers
-        });
+            const response = await fetch(endpoint, {
+                headers
+            });
 
-        return await this.handleHttpResponse(response);
+            const photoResponse = await this.handleHttpResponse<GetPhotoResponse>(response);
+
+            this._photoCache.set(photoId, photoResponse);
+        }
+        
+        // we know it was either set before the method was called or it was just set
+        return this._photoCache.get(photoId)!;
     }
 
     private async handleHttpResponse<TResponseData>(response: Response) {
