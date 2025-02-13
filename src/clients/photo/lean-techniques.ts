@@ -19,7 +19,7 @@ export class LeanTechniquesPhotoClient implements PhotoClient {
         this._apiKeyHeaderValue = getEnvVar('LEAN_TECHNIQUES_PHOTO_SERVICE_API_KEY');
     }
 
-    async getAlbum(): Promise<GetAlbumResponse> {
+    async getAlbums(): Promise<GetAlbumsResponse> {
         const headers = this.getRequestHeaders();
 
         const endpoint = `${this._serviceBaseUrl}/albums`;
@@ -31,7 +31,7 @@ export class LeanTechniquesPhotoClient implements PhotoClient {
         return await this.handleHttpResponse(response);
     }
 
-    async getAlbums(albumId: number): Promise<GetAlbumsResponse> {
+    async getAlbum(albumId: number): Promise<GetAlbumResponse> {
         const headers = this.getRequestHeaders();
 
         const endpoint = `${this._serviceBaseUrl}/albums/${albumId}`;

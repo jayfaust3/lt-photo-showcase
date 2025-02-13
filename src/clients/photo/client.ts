@@ -1,9 +1,9 @@
 import { GetAlbumResponse, GetAlbumsResponse, GetPhotoResponse} from '../../models';
 
 export interface PhotoClient {
-    getAlbum(): Promise<GetAlbumResponse>
+    getAlbums(): Promise<GetAlbumsResponse>
 
-    getAlbums(albumId: number): Promise<GetAlbumsResponse>
+    getAlbum(albumId: number): Promise<GetAlbumResponse>
 
     getPhoto(photoId: number): Promise<GetPhotoResponse>
 }
