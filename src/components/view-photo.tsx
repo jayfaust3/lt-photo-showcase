@@ -4,16 +4,21 @@ import { ViewPhotoProps } from '../models';
 import { mapPhotoDataModelToPhotoViewModel } from '../utils';
 
 export default function ViewPhoto(props: ViewPhotoProps) {
-  const { photo, closeCallback } = props;
+  const {
+    photo,
+    closeHandler
+  } = props;
 
   const photoHeight = 600;
   const photoWidth = 800;
 
-  const photoData = mapPhotoDataModelToPhotoViewModel(photo, photoHeight, photoWidth);
+  const [photoData] = useState(
+    mapPhotoDataModelToPhotoViewModel(photo, photoHeight, photoWidth)
+  );
 
   const handleCloseClicked = useCallback(() => {
-    closeCallback();
-  }, [closeCallback]);
+    closeHandler();
+  }, [closeHandler]);
 
   return (
     <div className='content-wrapper centered-wrapper'>
