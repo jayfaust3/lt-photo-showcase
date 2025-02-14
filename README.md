@@ -1,11 +1,12 @@
 # Lean Techniques Photo Showcase
 
 ## To run this app locally:
-    Install dependencies and run start script
+Install dependencies and run start script
 
-    ```bash
-    npm install && npm start
-    ```
+```bash
+npm install && npm start
+```
+
 **Note:**
 You will first want to add a local `.env` at the project root as it's excluded from source. It will need to include the following:
 
