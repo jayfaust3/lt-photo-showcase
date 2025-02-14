@@ -85,15 +85,19 @@ export default function Gallery() {
       )}
       {selectedPhotoId && selectedPhoto ? (
         <div className='content-wrapper centered-wrapper'>
-          <Filter
-            validationText={invalidSearchCriteriaValidationText}
-            validator={filterValidator}
-            filterHandler={filterHandler}
-          />
-          <ViewPhoto
-            photo={selectedPhoto}
-            closeHandler={handlePhotoClosed}
-          />
+          <div className='content-wrapper right-justify'>
+            <Filter
+                validationText={invalidSearchCriteriaValidationText}
+                validator={filterValidator}
+                filterHandler={filterHandler}
+            />
+          </div>
+          <div className='content-wrapper centered-wrapper'>
+            <ViewPhoto
+                photo={selectedPhoto}
+                closeHandler={handlePhotoClosed}
+            />
+          </div>
         </div>
       ) : (
         <ViewPhotos
