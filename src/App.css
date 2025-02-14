@@ -13,6 +13,7 @@
 .content-wrapper {
   padding: 6px;
   margin-bottom: 20px;
+  max-width: 100%;
 }
 
 .even-spacing {
@@ -24,4 +25,9 @@
 
 .right-justify {
   text-align: right;
+}
+
+.react-photo-album img {
+  max-width: 300px;
+  height: auto; /* Maintain aspect ratio */
 }

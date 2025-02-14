@@ -9,8 +9,8 @@ export default function ViewPhotos(props: ViewPhotosProps) {
     clickHandler
   } = props;
 
-  const photoHeight = 150;
-  const photoWidth = 200;
+  const photoHeight = 3;
+  const photoWidth = 4;
 
   const photoData = photos.map(
     photo =>
@@ -28,9 +28,9 @@ export default function ViewPhotos(props: ViewPhotosProps) {
   return (
     <div className='content-wrapper centered-wrapper'>
       <PhotoAlbum
-        layout='masonry'
+        layout='rows'
         photos={photoData}
-        onClick={handlePhotoClicked} 
+        onClick={handlePhotoClicked}
       />
     </div>
   );
