@@ -1,12 +1,6 @@
 export type FetchResult<TData> = 
     {
-        data: TData
-        status: 'loaded'
-    } |
-    {
-        status: 'loading'
-    } |
-    {
-        status: 'error'
-        error: string
+        data?: TData
+        status: 'loading' | 'loaded' | 'error'
+        error?: string
     }

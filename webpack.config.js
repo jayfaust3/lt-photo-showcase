@@ -57,8 +57,12 @@ module.exports = {
             {
                 context: [LEAN_TECHNIQUES_PHOTO_SERVICE_BASE_URL_PROXY],
                 target: LEAN_TECHNIQUES_PHOTO_SERVICE_BASE_URL,
+                pathRewrite: {
+                    '^/api': '',
+                },
                 changeOrigin: true,
-                secure: false
+                secure: false,
+                loglevel: 'debug'
             },
         ]
     },
@@ -70,7 +74,7 @@ module.exports = {
             'process.env': {
                 LEAN_TECHNIQUES_PHOTO_SERVICE_API_KEY_HEADER: JSON.stringify(LEAN_TECHNIQUES_PHOTO_SERVICE_API_KEY_HEADER),
                 LEAN_TECHNIQUES_PHOTO_SERVICE_API_KEY: JSON.stringify(LEAN_TECHNIQUES_PHOTO_SERVICE_API_KEY),
-                LEAN_TECHNIQUES_PHOTO_SERVICE_BASE_URL_PROXY: JSON.stringify(LEAN_TECHNIQUES_PHOTO_SERVICE_BASE_URL_PROXY)
+                LEAN_TECHNIQUES_PHOTO_SERVICE_BASE_URL: JSON.stringify(LEAN_TECHNIQUES_PHOTO_SERVICE_BASE_URL_PROXY)
             }
         })
     ]

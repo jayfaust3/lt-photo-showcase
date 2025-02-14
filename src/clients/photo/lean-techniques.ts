@@ -17,7 +17,7 @@ export class LeanTechniquesPhotoClient implements PhotoClient {
     private readonly _photoCache = new Map<number, GetPhotoResponse>();
    
     constructor() {
-        this._serviceBaseUrl = getEnvVar('LEAN_TECHNIQUES_PHOTO_SERVICE_BASE_URL_PROXY');
+        this._serviceBaseUrl = getEnvVar('LEAN_TECHNIQUES_PHOTO_SERVICE_BASE_URL');
         this._apiKeyHeaderKey = getEnvVar('LEAN_TECHNIQUES_PHOTO_SERVICE_API_KEY_HEADER');
         this._apiKeyHeaderValue = getEnvVar('LEAN_TECHNIQUES_PHOTO_SERVICE_API_KEY');
     }
