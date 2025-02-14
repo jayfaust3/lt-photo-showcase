@@ -1,6 +1,5 @@
-import { Filter } from '../view';
-
 export type FilterProps = {
-    filter: Filter
-    titleChangeHandler: (title?: string) => void
+    validator: (searchText: string) => boolean
+    filterHandler: (searchText: string) => void
+    validationText: string
 }

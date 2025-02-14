@@ -1,24 +1,49 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { FilterProps } from '../models';
 
 export default function Filter(props: FilterProps) {
   const {
-    filter,
-    titleChangeHandler
+    validator,
+    filterHandler,
+    validationText
   } = props;
 
-  const handleTitleSearch = (element: ChangeEvent<HTMLInputElement>) => {
-    titleChangeHandler(element.target.value);
+  const [searchText, setSearchText] = useState('');
+  const [isTouched, setIsTouched] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    setIsValid(
+      validator(searchText)
+    );
+  }, [validator, searchText]);
+  
+  const handleSearchTextChange = (element: ChangeEvent<HTMLInputElement>) => {
+    setIsTouched(true);
+    setSearchText(element.target.value);
   };
+
+  const handleFilterClicked = useCallback(() => {
+    filterHandler(searchText);
+  }, [filterHandler, searchText]);
 
   return (
     <div className='right-justify content-wrapper'>
       <label>Photo Title</label>
       <input
         type="text"
-        value={filter.title ?? ''}
-        onChange={handleTitleSearch}
+        value={searchText}
+        onChange={handleSearchTextChange}
       />
+      <button
+        onClick={handleFilterClicked}
+        disabled={!isValid}>
+          Filter
+      </button>
+      <span
+        hidden={isTouched && !isValid}>
+          {validationText}
+      </span>
     </div>
   );
 }

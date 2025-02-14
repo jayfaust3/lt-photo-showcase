@@ -11,6 +11,8 @@ export default function Gallery() {
   const [selectedPhotoId, setSelectedPhotoId] = useState<number | undefined>(undefined);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | undefined>(undefined);
 
+  const invalidSearchCriteriaValidationText = 'Search term must match the title of an existing photo.';
+
   const {
     data: albums,
     status: getAlbumsStatus,
@@ -56,6 +58,24 @@ export default function Gallery() {
     setSelectedPhotoId(undefined);
   };
 
+  const filterValidator = (searchText: string) => {
+    return photos.some(p => p.title === searchText);
+  };
+
+  const filterHandler = (searchText: string) => {
+    if (searchText) {
+        setPhotos(
+            photos.filter(p => p.title === searchText) 
+        );
+    } else {
+        setPhotos(
+            albums ? 
+            albums.flatMap(album => album.photos) :
+            [] 
+        );
+    }
+  };
+
   return (
     <div className='content-wrapper'>
       {isLoading && (
@@ -65,10 +85,21 @@ export default function Gallery() {
       )}
       {selectedPhotoId && selectedPhoto ? (
         <div className='content-wrapper centered-wrapper'>
-          <ViewPhoto photo={selectedPhoto} closeHandler={handlePhotoClosed}/>
+          <Filter
+            validationText={invalidSearchCriteriaValidationText}
+            validator={filterValidator}
+            filterHandler={filterHandler}
+          />
+          <ViewPhoto
+            photo={selectedPhoto}
+            closeHandler={handlePhotoClosed}
+          />
         </div>
       ) : (
-        <ViewPhotos photos={photos} clickHandler={handlePhotoClicked}/>
+        <ViewPhotos
+          photos={photos}
+          clickHandler={handlePhotoClicked}
+        />
       )}
     </div>
   );
