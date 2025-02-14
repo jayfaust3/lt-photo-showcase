@@ -11,7 +11,7 @@ export default function Gallery() {
   const [selectedPhotoId, setSelectedPhotoId] = useState<number | undefined>(undefined);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | undefined>(undefined);
 
-  const invalidSearchCriteriaValidationText = 'Search term must match the title of an existing photo.';
+  const invalidSearchCriteriaValidationText = 'Search term must be contained in the title of an existing photo.';
 
   const {
     data: albums,
