@@ -29,21 +29,25 @@ export default function Filter(props: FilterProps) {
 
   return (
     <div className='right-justify content-wrapper'>
-      <label>Photo Title</label>
-      <input
-        type="text"
-        value={searchText}
-        onChange={handleSearchTextChange}
-      />
-      <button
-        onClick={handleFilterClicked}
-        disabled={!isValid}>
-          Filter
-      </button>
-      <span
-        hidden={isTouched && !isValid}>
+      <div className='content-wrapper even-spacing'>
+        <label>Photo Title:</label>
+        <input
+          type="text"
+          value={searchText}
+          onChange={handleSearchTextChange}
+        />
+        <button
+          onClick={handleFilterClicked}
+          disabled={!isValid}>
+            Filter
+        </button>
+      </div>
+      <div className='content-wrapper even-spacing'>
+        <span
+          hidden={!isTouched || isValid}>
           {validationText}
-      </span>
+        </span>
+      </div>
     </div>
   );
 }

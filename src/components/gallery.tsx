@@ -15,14 +15,12 @@ export default function Gallery() {
 
   const {
     data: albums,
-    status: getAlbumsStatus,
-    // error: getAlbumsError
+    status: getAlbumsStatus
   } = useGetAlbums();
 
   const {
     data: photo,
-    status: getPhotoStatus,
-    // error: getPhotoError
+    status: getPhotoStatus
   } = useGetPhoto(selectedPhotoId);
 
   useEffect(
@@ -39,6 +37,7 @@ export default function Gallery() {
   useEffect(
     () => {
         setSelectedPhoto(photo);
+        setIsLoading(false);
     },
     [photo]
   );
@@ -51,21 +50,37 @@ export default function Gallery() {
   }, [getAlbumsStatus, getPhotoStatus]);
 
   const handlePhotoClicked = (photo: ViewablePhoto) => {
+    setIsLoading(true);
     setSelectedPhotoId(photo.id);
   };
 
   const handlePhotoClosed = () => {
     setSelectedPhotoId(undefined);
+    setPhotos(
+        albums ? 
+        albums.flatMap(album => album.photos) :
+        [] 
+    );
   };
 
   const filterValidator = (searchText: string) => {
-    return photos.some(p => p.title === searchText);
+    return photos.some(
+        p => {
+            const regex = new RegExp(searchText, 'i');
+            return regex.test(p.title);
+        }
+    );
   };
 
   const filterHandler = (searchText: string) => {
     if (searchText) {
         setPhotos(
-            photos.filter(p => p.title === searchText) 
+            photos.filter(
+                p => {
+                    const regex = new RegExp(searchText, 'i');
+                    return regex.test(p.title);
+                }
+            ) 
         );
     } else {
         setPhotos(
@@ -78,12 +93,20 @@ export default function Gallery() {
 
   return (
     <div className='content-wrapper'>
+      <h1>Lean Techniques Photo Showcase</h1>
       {isLoading && (
         <div className='right-justify'>
           <p>Loading...</p>
         </div>
       )}
-      {selectedPhotoId && selectedPhoto ? (
+      {!isLoading && selectedPhotoId && selectedPhoto ? (
+        <div className='content-wrapper centered-wrapper'>
+          <ViewPhoto
+            photo={selectedPhoto}
+            closeHandler={handlePhotoClosed}
+          />
+        </div>
+      ) : (
         <div className='content-wrapper centered-wrapper'>
           <div className='content-wrapper right-justify'>
             <Filter
@@ -93,17 +116,12 @@ export default function Gallery() {
             />
           </div>
           <div className='content-wrapper centered-wrapper'>
-            <ViewPhoto
-                photo={selectedPhoto}
-                closeHandler={handlePhotoClosed}
+            <ViewPhotos
+                photos={photos}
+                clickHandler={handlePhotoClicked}
             />
           </div>
         </div>
-      ) : (
-        <ViewPhotos
-          photos={photos}
-          clickHandler={handlePhotoClicked}
-        />
       )}
     </div>
   );

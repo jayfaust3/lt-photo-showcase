@@ -20,7 +20,7 @@ export default function ViewPhoto(props: ViewPhotoProps) {
 
   return (
     <div className='content-wrapper centered-wrapper'>
-        <h1>{photo.title}</h1>
+        <h3>{photo.title}</h3>
         <div className='content-wrapper'>
             <PhotoAlbum layout="rows" photos={[photoData]}/>
         </div>
