@@ -4,14 +4,14 @@ import { getPhotoClient } from '../../utils';
 import { PhotoClient } from '../../clients';
 
 export const useGetAlbum = (albumId?: number) => {
-    const photoClient: PhotoClient = getPhotoClient();
-
     const [result, setResult] = useState<FetchResult<Photo[]>>({
         status: 'loading'
     });
 
     useEffect(
         () => {
+            const photoClient: PhotoClient = getPhotoClient();
+
             if (albumId) {
                 const getData = async () => {
                     const getAlbumResponse: GetAlbumResponse = await photoClient.getAlbum(albumId);
@@ -33,7 +33,7 @@ export const useGetAlbum = (albumId?: number) => {
                 setResult({ data: [], status: 'loaded' });
             }
         },
-        [albumId, photoClient]
+        [albumId]
     );
 
     return result;

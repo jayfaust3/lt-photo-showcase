@@ -4,14 +4,14 @@ import { getPhotoClient } from '../../utils';
 import { PhotoClient } from '../../clients';
 
 export const useGetPhoto = (photoId?: number) => {
-    const photoClient: PhotoClient = getPhotoClient();
-
     const [result, setResult] = useState<FetchResult<Photo | undefined>>({
         status: 'loading'
     });
 
     useEffect(
         () => {
+            const photoClient: PhotoClient = getPhotoClient();
+
             if (photoId) {
                 const getData = async () => {
                     const getPhotoResponse: GetPhotoResponse = await photoClient.getPhoto(photoId);
@@ -33,7 +33,7 @@ export const useGetPhoto = (photoId?: number) => {
                 setResult({ data: undefined, status: 'loaded' });
             }
         },
-        [photoId, photoClient]
+        [photoId]
     );
 
     return result;

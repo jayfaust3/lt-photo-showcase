@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Photo, ViewablePhoto } from '../models';
 import { useGetAlbums, useGetPhoto } from '../hooks'
 import Filter from './filter';
@@ -7,18 +7,21 @@ import ViewPhoto from './view-photo';
 
 export default function Gallery() {
   const [isLoading, setIsLoading] = useState(false);
-
   const [photos, setPhotos] = useState<Photo[]>([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  // const [selectedPhoto, setSelectedPhoto] = useState<Photo | undefined>(undefined);
-
   const [selectedPhotoId, setSelectedPhotoId] = useState<number | undefined>(undefined);
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | undefined>(undefined);
 
   const {
     data: albums,
     status: getAlbumsStatus,
-    error: getAlbumsError
+    // error: getAlbumsError
   } = useGetAlbums();
+
+  const {
+    data: photo,
+    status: getPhotoStatus,
+    // error: getPhotoError
+  } = useGetPhoto(selectedPhotoId);
 
   useEffect(
     () => {
@@ -31,18 +34,26 @@ export default function Gallery() {
     [albums]
   );
 
-//   const [photos, setPhotos] = useState<Photo[]>(
-//     albums ? 
-//             albums.flatMap(album => album.photos) :
-//             [] 
-//   );
+  useEffect(
+    () => {
+        setSelectedPhoto(photo);
+    },
+    [photo]
+  );
 
   useEffect(() => {
-    setIsLoading(getAlbumsStatus === 'loading');
-  }, [getAlbumsStatus]);
+    setIsLoading(
+        getAlbumsStatus === 'loading' ||
+        getPhotoStatus === 'loading'
+    );
+  }, [getAlbumsStatus, getPhotoStatus]);
 
   const handlePhotoClicked = (photo: ViewablePhoto) => {
-    // setSelectedPhoto(photo);
+    setSelectedPhotoId(photo.id);
+  };
+
+  const handlePhotoClosed = () => {
+    setSelectedPhotoId(undefined);
   };
 
   return (
@@ -52,9 +63,9 @@ export default function Gallery() {
           <p>Loading...</p>
         </div>
       )}
-      {modalOpen /*&& selectedPhoto*/ ? (
+      {selectedPhotoId && selectedPhoto ? (
         <div className='content-wrapper centered-wrapper'>
-          
+          <ViewPhoto photo={selectedPhoto} closeHandler={handlePhotoClosed}/>
         </div>
       ) : (
         <ViewPhotos photos={photos} clickHandler={handlePhotoClicked}/>
