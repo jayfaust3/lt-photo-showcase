@@ -28,7 +28,7 @@ export default function ViewPhotos(props: ViewPhotosProps) {
   return (
     <div className='content-wrapper centered-wrapper'>
       <PhotoAlbum
-        layout='rows'
+        layout='masonry'
         photos={photoData}
         onClick={handlePhotoClicked}
       />

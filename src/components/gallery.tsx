@@ -108,7 +108,7 @@ export default function Gallery() {
         </div>
       ) : (
         <div className='content-wrapper centered-wrapper'>
-          <div className='content-wrapper right-justify'>
+          <div className='content-wrapper right-justify sticky-container'>
             <Filter
                 validationText={invalidSearchCriteriaValidationText}
                 validator={filterValidator}
