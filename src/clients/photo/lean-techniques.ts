@@ -12,7 +12,7 @@ export class LeanTechniquesPhotoClient implements PhotoClient {
     };
     private readonly _apiKeyHeaderKey: string;
     private readonly _apiKeyHeaderValue: string;
-    private _albumsCache: GetAlbumsResponse | undefined;
+    private _albumsCache: GetAlbumsResponse | undefined = undefined;
     private readonly _albumCache = new Map<number, GetAlbumResponse>();
     private readonly _photoCache = new Map<number, GetPhotoResponse>();
    
