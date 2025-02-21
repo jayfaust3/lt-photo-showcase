@@ -79,7 +79,7 @@ describe('LeanTechniquesPhotoClient tests', function () {
             });
 
             it ('throws an error', async function () {
-                expect(() => sut.getAlbums()).rejects.toThrow(
+                await expect(() => sut.getAlbums()).rejects.toThrow(
                     new Error(`HTTP response returned the following non-2xx status: ${errorStatus}`)
                 );
             });
